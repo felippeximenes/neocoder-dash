@@ -17,11 +17,11 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 const SMM_COLOR_MAP: Record<string, string> = {
-  "Não iniciada": "#6B7280",
-  "Em andamento": "#4F8EF7",
-  "Em revisão": "#A78BFA",
+  "Não iniciada": "#8A8FA8",
+  "Em andamento": "#6366F1",
+  "Em revisão": "#A855F7",
   "Em agendamento": "#FBBF24",
-  "Em standby": "#6B7280",
+  "Em standby": "#8A8FA8",
 };
 
 async function Scorecards() {

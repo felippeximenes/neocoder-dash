@@ -20,10 +20,10 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 const DESIGN_COLOR_MAP: Record<string, string> = {
-  "Em andamento": "#4F8EF7",
-  Aprovado: "#34D399",
+  "Em andamento": "#6366F1",
+  Aprovado: "#2EE6C8",
   "Aguardando aprovação": "#FBBF24",
-  "Aguardando informações": "#A78BFA",
+  "Aguardando informações": "#A855F7",
   "Em Ajuste": "#F87171",
 };
 

@@ -24,7 +24,7 @@ async function ClienteSection({ cliente, items }: { cliente: DesignCliente; item
 
   return (
     <div className="flex flex-col gap-4">
-      <Badge label={cliente} colorClass={CLIENTE_BADGE[cliente]} />
+      <Badge label={cliente} colorClass={CLIENTE_BADGE[cliente]} className="self-start" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Scorecard label="Jobs em andamento" value={summary.ativos} icon={ListChecks} accent="blue" />
         <Scorecard
