@@ -65,6 +65,40 @@ export function getDate(properties: NotionProperties, key: string): string | nul
   return prop.date?.start ?? null;
 }
 
+export function getStatus(properties: NotionProperties, key: string): string {
+  const prop = properties[key];
+  if (prop?.type !== "status") return "";
+  return prop.status?.name ?? "";
+}
+
+export function getRichText(properties: NotionProperties, key: string): string {
+  const prop = properties[key];
+  if (prop?.type !== "rich_text") return "";
+  return prop.rich_text.map((t) => t.plain_text).join("");
+}
+
+export function getMultiSelect(properties: NotionProperties, key: string): string[] {
+  const prop = properties[key];
+  if (prop?.type !== "multi_select") return [];
+  return prop.multi_select.map((o) => o.name);
+}
+
+export function getFormulaNumber(properties: NotionProperties, key: string): number {
+  const prop = properties[key];
+  if (prop?.type !== "formula" || prop.formula.type !== "number") return 0;
+  return prop.formula.number ?? 0;
+}
+
+export function parsePercent(text: string): number {
+  const match = text.match(/(\d+(?:\.\d+)?)\s*%/);
+  return match ? parseFloat(match[1]) : 0;
+}
+
+export function parseLeadingNumber(text: string): number {
+  const match = text.match(/^\s*(\d+(?:\.\d+)?)/);
+  return match ? parseFloat(match[1]) : 0;
+}
+
 export function daysUntil(dateStr: string | null): number {
   if (!dateStr) return 0;
   const diff = new Date(dateStr).getTime() - Date.now();

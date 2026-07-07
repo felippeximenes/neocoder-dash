@@ -1,4 +1,4 @@
-export type EsteiraStatus = "Em andamento" | "Aprovado" | "Concluído";
+export type EsteiraStatus = "Não iniciado" | "Em andamento" | "Aprovado" | "Concluído";
 export type Prioridade = "Alta" | "Média" | "Baixa";
 
 export interface EsteiraItem {
@@ -13,11 +13,12 @@ export interface EsteiraItem {
   dataEntrega: string | null;
 }
 
-export type DesignCliente = "LIBERPAY" | "NEOCODER";
+export type DesignCliente = "LIBERPAY" | "NEOCODER" | "KOTAI";
 export type DesignStatus =
   | "Em andamento"
   | "Aprovado"
   | "Aguardando aprovação"
+  | "Aguardando informações"
   | "Em Ajuste";
 export type Complexidade = "Alta" | "Média" | "Baixa";
 

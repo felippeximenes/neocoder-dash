@@ -2,8 +2,9 @@ import { cache } from "react";
 import {
   DATABASE_IDS,
   getDate,
+  getMultiSelect,
   getPeopleNames,
-  getSelect,
+  getStatus,
   getTitle,
   queryDatabase,
 } from "./notion";
@@ -11,14 +12,24 @@ import type { Plataforma, SmmItem, SmmStatus, StatusCount } from "@/types";
 
 const SMM_CUTOFF_DATE = "2026-01-01";
 
+const PLATAFORMA_MAP: Record<string, Plataforma> = {
+  Instagram: "Instagram",
+  Linkedin: "LinkedIn",
+  LinkedIn: "LinkedIn",
+  X: "Twitter/X",
+  Twitter: "Twitter/X",
+  "Twitter/X": "Twitter/X",
+};
+
 function normalize(page: Awaited<ReturnType<typeof queryDatabase>>[number]): SmmItem {
   const properties = page.properties;
+  const [primeiraPlataforma] = getMultiSelect(properties, "Plataforma");
   return {
     id: page.id,
     name: getTitle(properties, "Name"),
-    status: (getSelect(properties, "Status 1") || "Não iniciada") as SmmStatus,
+    status: (getStatus(properties, "Status 1") || "Não iniciada") as SmmStatus,
     assign: getPeopleNames(properties, "Assign"),
-    plataforma: (getSelect(properties, "Plataforma") || "Instagram") as Plataforma,
+    plataforma: PLATAFORMA_MAP[primeiraPlataforma ?? ""] ?? "Instagram",
     startData: getDate(properties, "Start Data"),
     finalData: getDate(properties, "Final Data"),
   };
