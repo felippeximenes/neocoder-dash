@@ -15,7 +15,9 @@ import type {
   DesignCliente,
   DesignItem,
   DesignStatus,
+  Risco,
   ScorecardData,
+  SolicitanteArea,
   StatusCount,
 } from "@/types";
 
@@ -27,9 +29,11 @@ function normalize(page: Awaited<ReturnType<typeof queryDatabase>>[number]): Des
     cliente: (getSelect(properties, "Cliente") || "NEOCODER") as DesignCliente,
     status: (getStatus(properties, "Em Ajuste") || "Em andamento") as DesignStatus,
     responsavelExterno: getSelect(properties, "Responsável externo"),
+    solicitanteArea: (getSelect(properties, "Solicitante (Área)") || null) as SolicitanteArea | null,
     percentualConclusao: getFormulaNumber(properties, "% Conclusão"),
     alteracoes: parseLeadingNumber(getRichText(properties, "Alterações")),
     complexidade: (getRichText(properties, "Complexidade") || "Baixa") as Complexidade,
+    risco: (getSelect(properties, "Risco") || null) as Risco | null,
     prazo: getDate(properties, "Prazo"),
     entrega: getDate(properties, "Entrega"),
   };
@@ -74,6 +78,42 @@ export function getDesignWorkloadByResponsible(items: DesignItem[]): ScorecardDa
   return Array.from(counts.entries())
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value);
+}
+
+export function getDesignOcupacaoPercentual(items: DesignItem[]): ScorecardData[] {
+  const active = items.filter((i) => i.status !== "Aprovado");
+  const total = active.length;
+  return getDesignWorkloadByResponsible(items).map(({ label, value }) => ({
+    label,
+    value: total > 0 ? Math.round((value / total) * 100) : 0,
+  }));
+}
+
+export function getDesignItemsByCliente(items: DesignItem[]): Map<DesignCliente, DesignItem[]> {
+  const grouped = new Map<DesignCliente, DesignItem[]>();
+  for (const item of items) {
+    const list = grouped.get(item.cliente) ?? [];
+    list.push(item);
+    grouped.set(item.cliente, list);
+  }
+  return grouped;
+}
+
+export function getSituacaoPrazo(item: DesignItem): "Atrasado" | "No prazo" | "—" {
+  if (!item.prazo) return "—";
+  if (item.status === "Aprovado") return "No prazo";
+  return new Date(item.prazo).getTime() < Date.now() ? "Atrasado" : "No prazo";
+}
+
+export function getDesignClienteSummary(items: DesignItem[]) {
+  const ativos = items.filter((i) => i.status !== "Aprovado");
+  const concluidoMedio =
+    ativos.length > 0
+      ? Math.round(ativos.reduce((sum, i) => sum + i.percentualConclusao, 0) / ativos.length)
+      : 0;
+  const riscoAlto = ativos.filter((i) => i.risco === "Alto").length;
+  const emAtraso = ativos.filter((i) => getSituacaoPrazo(i) === "Atrasado").length;
+  return { ativos: ativos.length, concluidoMedio, riscoAlto, emAtraso };
 }
 
 export function getDesignTableRows(items: DesignItem[]): DesignItem[] {

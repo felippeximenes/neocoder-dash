@@ -99,6 +99,14 @@ export function parseLeadingNumber(text: string): number {
   return match ? parseFloat(match[1]) : 0;
 }
 
+export function parseYesNoPercent(text: string): number {
+  const percentMatch = text.match(/(\d+(?:\.\d+)?)\s*%/);
+  if (percentMatch) return parseFloat(percentMatch[1]);
+  if (/ainda não/i.test(text)) return 0;
+  if (/(sim|agendad[oa]s?)/i.test(text)) return 100;
+  return 0;
+}
+
 export function daysUntil(dateStr: string | null): number {
   if (!dateStr) return 0;
   const diff = new Date(dateStr).getTime() - Date.now();
