@@ -44,6 +44,7 @@ export function getDesignScorecards(items: DesignItem[]) {
   return {
     emAndamento: items.filter((i) => i.status === "Em andamento").length,
     aguardandoAprovacao: items.filter((i) => i.status === "Aguardando aprovação").length,
+    aguardandoInformacoes: items.filter((i) => i.status === "Aguardando informações").length,
     aprovado: items.filter((i) => i.status === "Aprovado").length,
     altoRetrabalho: items.filter((i) => i.alteracoes > 3).length,
   };
@@ -54,6 +55,7 @@ export function getDesignStatusDistribution(items: DesignItem[]): StatusCount[] 
     "Em andamento",
     "Aprovado",
     "Aguardando aprovação",
+    "Aguardando informações",
     "Em Ajuste",
   ];
   return statuses.map((status) => ({

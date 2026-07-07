@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { AlertTriangle, CheckCircle2, Clock, ListChecks } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Circle, Clock, ListChecks } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
@@ -17,6 +17,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 const ESTEIRA_COLOR_MAP: Record<string, string> = {
+  "Não iniciado": "#6B7280",
   "Em andamento": "#4F8EF7",
   Aprovado: "#A78BFA",
   Concluído: "#34D399",
@@ -26,7 +27,8 @@ async function Scorecards() {
   const items = await getEsteiraItems();
   const counts = getEsteiraScorecards(items);
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <Scorecard label="Não iniciado" value={counts.naoIniciado} icon={Circle} accent="gray" />
       <Scorecard label="Em andamento" value={counts.emAndamento} icon={Clock} accent="blue" />
       <Scorecard label="Aprovado" value={counts.aprovado} icon={CheckCircle2} accent="purple" />
       <Scorecard label="Concluído" value={counts.concluido} icon={ListChecks} accent="green" />
@@ -72,8 +74,8 @@ async function Table() {
 
 function ScorecardsSkeletonGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, i) => (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {Array.from({ length: 5 }).map((_, i) => (
         <ScorecardSkeleton key={i} />
       ))}
     </div>

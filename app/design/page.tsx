@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { CheckCircle2, Clock, Hourglass, RefreshCw } from "lucide-react";
+import { CheckCircle2, Clock, Hourglass, HelpCircle, RefreshCw } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
@@ -22,6 +22,7 @@ const DESIGN_COLOR_MAP: Record<string, string> = {
   "Em andamento": "#4F8EF7",
   Aprovado: "#34D399",
   "Aguardando aprovação": "#FBBF24",
+  "Aguardando informações": "#A78BFA",
   "Em Ajuste": "#F87171",
 };
 
@@ -29,13 +30,19 @@ async function Scorecards() {
   const items = await getDesignItems();
   const counts = getDesignScorecards(items);
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       <Scorecard label="Em andamento" value={counts.emAndamento} icon={Clock} accent="blue" />
       <Scorecard
         label="Aguardando aprovação"
         value={counts.aguardandoAprovacao}
         icon={Hourglass}
         accent="yellow"
+      />
+      <Scorecard
+        label="Aguardando informações"
+        value={counts.aguardandoInformacoes}
+        icon={HelpCircle}
+        accent="purple"
       />
       <Scorecard label="Aprovado" value={counts.aprovado} icon={CheckCircle2} accent="green" />
       <Scorecard
@@ -96,8 +103,8 @@ async function Table() {
 
 function ScorecardsSkeletonGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, i) => (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {Array.from({ length: 5 }).map((_, i) => (
         <ScorecardSkeleton key={i} />
       ))}
     </div>
