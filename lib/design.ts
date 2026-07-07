@@ -2,10 +2,12 @@ import { cache } from "react";
 import {
   DATABASE_IDS,
   getDate,
-  getNumber,
-  getPeopleNames,
+  getFormulaNumber,
+  getRichText,
   getSelect,
+  getStatus,
   getTitle,
+  parseLeadingNumber,
   queryDatabase,
 } from "./notion";
 import type {
@@ -23,11 +25,11 @@ function normalize(page: Awaited<ReturnType<typeof queryDatabase>>[number]): Des
     id: page.id,
     job: getTitle(properties, "Job"),
     cliente: (getSelect(properties, "Cliente") || "NEOCODER") as DesignCliente,
-    status: (getSelect(properties, "Status") || "Em andamento") as DesignStatus,
-    responsavelExterno: getPeopleNames(properties, "Responsável externo"),
-    percentualConclusao: getNumber(properties, "% Conclusão"),
-    alteracoes: getNumber(properties, "Alterações"),
-    complexidade: (getSelect(properties, "Complexidade") || "Baixa") as Complexidade,
+    status: (getStatus(properties, "Em Ajuste") || "Em andamento") as DesignStatus,
+    responsavelExterno: getSelect(properties, "Responsável externo"),
+    percentualConclusao: getFormulaNumber(properties, "% Conclusão"),
+    alteracoes: parseLeadingNumber(getRichText(properties, "Alterações")),
+    complexidade: (getRichText(properties, "Complexidade") || "Baixa") as Complexidade,
     prazo: getDate(properties, "Prazo"),
     entrega: getDate(properties, "Entrega"),
   };
