@@ -11,22 +11,36 @@ import {
   getTitle,
   parseLeadingNumber,
   parsePercent,
+  parseYesNoPercent,
   queryDatabase,
 } from "./notion";
-import type { EsteiraItem, EsteiraStatus, Prioridade, StatusCount } from "@/types";
+import type { Cliente, EsteiraItem, EsteiraStatus, Prioridade, Recorrencia, StatusCount } from "@/types";
+
+function parseDiasProducao(text: string): number {
+  if (/ainda a fazer/i.test(text)) return 0;
+  const match = text.match(/(\d+(?:\.\d+)?)\s*dias?/i);
+  return match ? parseFloat(match[1]) : 0;
+}
 
 function normalize(page: Awaited<ReturnType<typeof queryDatabase>>[number]): EsteiraItem {
   const properties = page.properties;
   const concluidoTag = getMultiSelect(properties, "(%) Concluido").find((tag) =>
     /^\d+(?:\.\d+)?%$/.test(tag.trim())
   );
+  const tempoProducaoDias = parseDiasProducao(getSelect(properties, "Tempo de produção"));
+  const escopoEntregueDias = parseDiasProducao(getSelect(properties, "Escopo já Entregue"));
   return {
     id: page.id,
     nomeTarefa: getTitle(properties, "Nome da tarefa"),
     status: (getStatus(properties, "Status") || "Em andamento") as EsteiraStatus,
     responsavel: getPeopleNames(properties, "Responsável"),
+    cliente: (getSelect(properties, "Cliente") || null) as Cliente | null,
+    recorrencia: (getSelect(properties, "Recorrência") || null) as Recorrencia | null,
     retrabalho: parseLeadingNumber(getRichText(properties, "Retrabalho (%)")),
     percentualConcluido: concluidoTag ? parsePercent(concluidoTag) : 0,
+    percentualEscopoConcluido:
+      tempoProducaoDias > 0 ? Math.round((escopoEntregueDias / tempoProducaoDias) * 100) : 0,
+    percentualAgendado: parseYesNoPercent(getRichText(properties, "Agendamento")),
     diasAtraso: getNumber(properties, "Dias de atraso"),
     prioridade: (getSelect(properties, "Prioridade") || "Baixa") as Prioridade,
     dataEntrega: getDate(properties, "Data Entrega"),

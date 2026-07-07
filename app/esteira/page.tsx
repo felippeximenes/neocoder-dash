@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
-import { Badge, ESTEIRA_STATUS_BADGE, PRIORIDADE_BADGE } from "@/components/Badge";
+import { Badge, CLIENTE_BADGE, ESTEIRA_STATUS_BADGE, PRIORIDADE_BADGE } from "@/components/Badge";
 import {
   getEsteiraItems,
   getEsteiraScorecards,
@@ -52,15 +52,31 @@ async function Table() {
       getRowId={(r) => r.id}
       emptyMessage="Nenhuma tarefa em aberto."
       columns={[
-        { key: "nome", header: "Nome da tarefa", render: (r) => r.nomeTarefa },
         { key: "responsavel", header: "Responsável", render: (r) => r.responsavel || "—" },
+        { key: "nome", header: "Nome da esteira", render: (r) => r.nomeTarefa },
+        {
+          key: "cliente",
+          header: "Cliente",
+          render: (r) =>
+            r.cliente ? <Badge label={r.cliente} colorClass={CLIENTE_BADGE[r.cliente]} /> : "—",
+        },
+        { key: "recorrencia", header: "Recorrência", render: (r) => r.recorrencia || "—" },
+        {
+          key: "escopo",
+          header: "% do escopo concluído",
+          render: (r) => `${r.percentualEscopoConcluido}%`,
+        },
+        {
+          key: "agendado",
+          header: "% da esteira agendada",
+          render: (r) => `${r.percentualAgendado}%`,
+        },
+        { key: "retrabalho", header: "% retrabalho", render: (r) => `${r.retrabalho}%` },
         {
           key: "status",
           header: "Status",
           render: (r) => <Badge label={r.status} colorClass={ESTEIRA_STATUS_BADGE[r.status]} />,
         },
-        { key: "percentual", header: "% Concluído", render: (r) => `${r.percentualConcluido}%` },
-        { key: "retrabalho", header: "Retrabalho (%)", render: (r) => `${r.retrabalho}%` },
         { key: "atraso", header: "Dias de atraso", render: (r) => r.diasAtraso },
         {
           key: "prioridade",

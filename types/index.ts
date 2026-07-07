@@ -1,3 +1,6 @@
+export type Cliente = "LIBERPAY" | "NEOCODER" | "KOTAI";
+export type Recorrencia = "A cada 15 dias" | "A cada 30 dias";
+
 export type EsteiraStatus = "Não iniciado" | "Em andamento" | "Aprovado" | "Concluído";
 export type Prioridade = "Alta" | "Média" | "Baixa";
 
@@ -6,14 +9,18 @@ export interface EsteiraItem {
   nomeTarefa: string;
   status: EsteiraStatus;
   responsavel: string;
+  cliente: Cliente | null;
+  recorrencia: Recorrencia | null;
   retrabalho: number;
   percentualConcluido: number;
+  percentualEscopoConcluido: number;
+  percentualAgendado: number;
   diasAtraso: number;
   prioridade: Prioridade;
   dataEntrega: string | null;
 }
 
-export type DesignCliente = "LIBERPAY" | "NEOCODER" | "KOTAI";
+export type DesignCliente = Cliente;
 export type DesignStatus =
   | "Em andamento"
   | "Aprovado"
@@ -21,6 +28,8 @@ export type DesignStatus =
   | "Aguardando informações"
   | "Em Ajuste";
 export type Complexidade = "Alta" | "Média" | "Baixa";
+export type Risco = "Baixo" | "Médio" | "Alto";
+export type SolicitanteArea = "Marketing" | "Produto" | "Comercial" | "CX";
 
 export interface DesignItem {
   id: string;
@@ -28,9 +37,11 @@ export interface DesignItem {
   cliente: DesignCliente;
   status: DesignStatus;
   responsavelExterno: string;
+  solicitanteArea: SolicitanteArea | null;
   percentualConclusao: number;
   alteracoes: number;
   complexidade: Complexidade;
+  risco: Risco | null;
   prazo: string | null;
   entrega: string | null;
 }
