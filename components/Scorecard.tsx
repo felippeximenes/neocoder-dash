@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Card } from "@/components/Card";
 
 interface ScorecardProps {
   label: string;
@@ -19,21 +20,21 @@ const ACCENT_MAP: Record<NonNullable<ScorecardProps["accent"]>, string> = {
 
 export function Scorecard({ label, value, icon: Icon, accent = "gray" }: ScorecardProps) {
   return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-border-accent">
+    <Card className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium uppercase tracking-wider text-gray-400">
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
           {label}
         </span>
         {Icon && <Icon size={18} className={cn(ACCENT_MAP[accent])} strokeWidth={1.75} />}
       </div>
-      <span className="text-5xl font-black text-white">{value}</span>
-    </div>
+      <span className="font-display text-5xl font-extrabold text-text-primary">{value}</span>
+    </Card>
   );
 }
 
 export function ScorecardSkeleton() {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6">
+    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6 backdrop-blur-md">
       <div className="h-4 w-24 animate-pulse rounded bg-surface-hover" />
       <div className="h-10 w-16 animate-pulse rounded bg-surface-hover" />
     </div>

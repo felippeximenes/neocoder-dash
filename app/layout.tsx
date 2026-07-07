@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Sora, Manrope } from "next/font/google";
 import { Sidebar } from "@/components/Sidebar";
+import { Topbar } from "@/components/Topbar";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sora",
+});
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-manrope",
+});
 
 export const metadata: Metadata = {
   title: "Neocoder Dashboard",
@@ -16,12 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`dark ${inter.variable}`}>
-      <body className="min-h-screen bg-background font-sans text-text-primary antialiased">
-        <Sidebar />
-        <main className="min-h-screen pl-60">
-          <div className="mx-auto max-w-7xl px-8 py-10">{children}</div>
-        </main>
+    <html lang="pt-BR" className={`dark ${sora.variable} ${manrope.variable}`}>
+      <body className="min-h-screen bg-transparent font-sans text-text-primary antialiased">
+        <Topbar />
+        <div className="flex">
+          <Sidebar />
+          <main className="min-h-screen flex-1 pl-60">
+            <div className="mx-auto max-w-7xl px-8 py-10">{children}</div>
+          </main>
+        </div>
       </body>
     </html>
   );

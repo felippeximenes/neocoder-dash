@@ -6,34 +6,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0A0A0F",
-        surface: "#111118",
-        "surface-hover": "#1A1A24",
+        background: "#04050C",
+        surface: "rgba(10,11,26,0.55)",
+        "surface-solid": "#0A0A1E",
+        "surface-hover": "rgba(20,21,44,0.7)",
         border: {
-          DEFAULT: "#1E1E2E",
-          accent: "#2D2D44",
+          DEFAULT: "rgba(120,90,200,0.15)",
+          accent: "rgba(139,92,246,0.4)",
         },
         text: {
-          primary: "#F0F0FF",
-          secondary: "#8888AA",
-          muted: "#44445A",
+          primary: "#E7E8F2",
+          secondary: "#9498B2",
+          muted: "#6B6F8A",
         },
         brand: {
-          blue: "#4F8EF7",
-          green: "#34D399",
+          blue: "#6366F1",
+          green: "#2EE6C8",
           yellow: "#FBBF24",
           red: "#F87171",
-          purple: "#A78BFA",
-          gray: "#6B7280",
+          purple: "#A855F7",
+          gray: "#8A8FA8",
         },
         client: {
           liberpay: "#7C3AED",
           neocoder: "#F59E0B",
-          kotai: "#34D399",
+          kotai: "#2EE6C8",
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-manrope)", "sans-serif"],
+        display: ["var(--font-sora)", "sans-serif"],
       },
       borderRadius: {
         "2xl": "1rem",

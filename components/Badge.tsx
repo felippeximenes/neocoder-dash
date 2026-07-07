@@ -4,14 +4,16 @@ import { cn } from "@/lib/utils";
 interface BadgeProps {
   label: string;
   colorClass: string;
+  className?: string;
 }
 
-export function Badge({ label, colorClass }: BadgeProps) {
+export function Badge({ label, colorClass, className }: BadgeProps) {
   return (
     <span
       className={cn(
         "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
-        colorClass
+        colorClass,
+        className
       )}
     >
       {label}

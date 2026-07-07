@@ -17,10 +17,10 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 const ESTEIRA_COLOR_MAP: Record<string, string> = {
-  "Não iniciado": "#6B7280",
-  "Em andamento": "#4F8EF7",
-  Aprovado: "#A78BFA",
-  Concluído: "#34D399",
+  "Não iniciado": "#8A8FA8",
+  "Em andamento": "#6366F1",
+  Aprovado: "#A855F7",
+  Concluído: "#2EE6C8",
 };
 
 async function Scorecards() {
