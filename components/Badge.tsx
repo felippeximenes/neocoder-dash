@@ -46,6 +46,12 @@ export const CLIENTE_BADGE: Record<string, string> = {
   KOTAI: "bg-client-kotai/15 text-client-kotai",
 };
 
+export const RISCO_BADGE: Record<string, string> = {
+  Baixo: "bg-brand-green/15 text-brand-green",
+  Médio: "bg-brand-yellow/15 text-brand-yellow",
+  Alto: "bg-brand-red/15 text-brand-red",
+};
+
 export const SMM_STATUS_BADGE: Record<string, string> = {
   "Não iniciada": "bg-brand-gray/15 text-brand-gray",
   "Em andamento": "bg-brand-blue/15 text-brand-blue",

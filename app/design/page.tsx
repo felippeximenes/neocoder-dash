@@ -5,9 +5,10 @@ import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
 import { WorkloadBarChart } from "@/components/WorkloadBarChart";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
-import { Badge, CLIENTE_BADGE, DESIGN_STATUS_BADGE } from "@/components/Badge";
+import { Badge, CLIENTE_BADGE, DESIGN_STATUS_BADGE, RISCO_BADGE } from "@/components/Badge";
 import {
   getDesignItems,
+  getDesignOcupacaoPercentual,
   getDesignScorecards,
   getDesignStatusDistribution,
   getDesignTableRows,
@@ -59,10 +60,21 @@ async function Charts() {
   const items = await getDesignItems();
   const distribution = getDesignStatusDistribution(items);
   const workload = getDesignWorkloadByResponsible(items);
+  const ocupacao = getDesignOcupacaoPercentual(items);
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <StatusPieChart data={distribution} colorMap={DESIGN_COLOR_MAP} />
-      <WorkloadBarChart data={workload} />
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-text-secondary">Distribuição por status</span>
+        <StatusPieChart data={distribution} colorMap={DESIGN_COLOR_MAP} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-text-secondary">Carga por responsável</span>
+        <WorkloadBarChart data={workload} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-text-secondary">% de ocupação do time</span>
+        <WorkloadBarChart data={ocupacao} unit="%" />
+      </div>
     </div>
   );
 }
@@ -83,14 +95,20 @@ async function Table() {
           render: (r) => <Badge label={r.cliente} colorClass={CLIENTE_BADGE[r.cliente]} />,
         },
         { key: "responsavel", header: "Responsável", render: (r) => r.responsavelExterno || "—" },
+        { key: "solicitante", header: "Solicitante (Área)", render: (r) => r.solicitanteArea || "—" },
         {
           key: "status",
           header: "Status",
           render: (r) => <Badge label={r.status} colorClass={DESIGN_STATUS_BADGE[r.status]} />,
         },
         { key: "conclusao", header: "% Conclusão", render: (r) => `${r.percentualConclusao}%` },
-        { key: "alteracoes", header: "Alterações", render: (r) => r.alteracoes },
+        { key: "alteracoes", header: "Retrabalho", render: (r) => r.alteracoes },
         { key: "complexidade", header: "Complexidade", render: (r) => r.complexidade },
+        {
+          key: "risco",
+          header: "Risco",
+          render: (r) => (r.risco ? <Badge label={r.risco} colorClass={RISCO_BADGE[r.risco]} /> : "—"),
+        },
         {
           key: "prazo",
           header: "Prazo",
@@ -113,7 +131,8 @@ function ScorecardsSkeletonGrid() {
 
 function ChartsSkeletonGrid() {
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <ChartSkeleton />
       <ChartSkeleton />
       <ChartSkeleton />
     </div>
