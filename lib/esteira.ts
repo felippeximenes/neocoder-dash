@@ -40,6 +40,7 @@ export const getEsteiraItems = cache(async (): Promise<EsteiraItem[]> => {
 
 export function getEsteiraScorecards(items: EsteiraItem[]) {
   return {
+    naoIniciado: items.filter((i) => i.status === "Não iniciado").length,
     emAndamento: items.filter((i) => i.status === "Em andamento").length,
     aprovado: items.filter((i) => i.status === "Aprovado").length,
     concluido: items.filter((i) => i.status === "Concluído").length,
@@ -48,7 +49,7 @@ export function getEsteiraScorecards(items: EsteiraItem[]) {
 }
 
 export function getEsteiraStatusDistribution(items: EsteiraItem[]): StatusCount[] {
-  const statuses: EsteiraStatus[] = ["Em andamento", "Aprovado", "Concluído"];
+  const statuses: EsteiraStatus[] = ["Não iniciado", "Em andamento", "Aprovado", "Concluído"];
   return statuses.map((status) => ({
     name: status,
     value: items.filter((i) => i.status === status).length,

@@ -20,6 +20,7 @@ export function Badge({ label, colorClass }: BadgeProps) {
 }
 
 export const ESTEIRA_STATUS_BADGE: Record<string, string> = {
+  "Não iniciado": "bg-brand-gray/15 text-brand-gray",
   "Em andamento": "bg-brand-blue/15 text-brand-blue",
   Aprovado: "bg-brand-purple/15 text-brand-purple",
   Concluído: "bg-brand-green/15 text-brand-green",
@@ -35,12 +36,14 @@ export const DESIGN_STATUS_BADGE: Record<string, string> = {
   "Em andamento": "bg-brand-blue/15 text-brand-blue",
   Aprovado: "bg-brand-green/15 text-brand-green",
   "Aguardando aprovação": "bg-brand-yellow/15 text-brand-yellow",
+  "Aguardando informações": "bg-brand-purple/15 text-brand-purple",
   "Em Ajuste": "bg-brand-red/15 text-brand-red",
 };
 
 export const CLIENTE_BADGE: Record<string, string> = {
   LIBERPAY: "bg-client-liberpay/15 text-client-liberpay",
   NEOCODER: "bg-client-neocoder/15 text-client-neocoder",
+  KOTAI: "bg-client-kotai/15 text-client-kotai",
 };
 
 export const SMM_STATUS_BADGE: Record<string, string> = {

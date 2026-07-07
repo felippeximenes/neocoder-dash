@@ -29,6 +29,7 @@ const config: Config = {
         client: {
           liberpay: "#7C3AED",
           neocoder: "#F59E0B",
+          kotai: "#34D399",
         },
       },
       fontFamily: {
