@@ -10,7 +10,6 @@ import { Badge, PlatformBadge, SMM_STATUS_BADGE } from "@/components/Badge";
 import {
   getSmmItems,
   getSmmPlatformVolume,
-  getSmmProximosVencimentos,
   getSmmScorecards,
   getSmmStatusDistribution,
   getSmmTableRows,
@@ -55,36 +54,16 @@ async function Charts() {
   const items = await getSmmItems();
   const distribution = getSmmStatusDistribution(items).filter((d) => d.name !== "Concluído");
   const volume = getSmmPlatformVolume(items);
-  const proximos = getSmmProximosVencimentos(items);
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <StatusPieChart data={distribution} colorMap={SMM_COLOR_MAP} centerLabel="POSTS" />
-      <Card className="flex flex-col gap-6">
-        <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-            Volume por plataforma
-          </span>
-          <div className="mt-4">
-            <BarRows data={volume} />
-          </div>
+      <Card className="flex flex-1 flex-col justify-center">
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Volume por plataforma
+        </span>
+        <div className="mt-4">
+          <BarRows data={volume} />
         </div>
-        {proximos.length > 0 && (
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-              Próximos vencimentos
-            </span>
-            <div className="mt-3 flex flex-col gap-2.5">
-              {proximos.map((p) => (
-                <div key={p.nome} className="flex items-center justify-between gap-3 text-sm">
-                  <span className="truncate text-text-secondary">{p.nome}</span>
-                  <span className="font-display flex-none font-semibold text-text-primary">
-                    {p.data ? new Date(p.data).toLocaleDateString("pt-BR") : "—"}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </Card>
     </div>
   );
