@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Palette, Megaphone } from "lucide-react";
+import { LayoutGrid, Palette, Megaphone, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/esteira", label: "Esteira de Conteúdo", icon: LayoutGrid },
   { href: "/design", label: "Design", icon: Palette },
-  // Desativado por enquanto — reativar quando Esteira/SMM tiverem campo de Cliente confiável.
-  // { href: "/clientes", label: "Projeto por Cliente", icon: Users },
+  { href: "/clientes", label: "Projeto por Cliente", icon: Users },
   { href: "/smm", label: "SMM Social Media", icon: Megaphone },
 ];
 
