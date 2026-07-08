@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`dark ${sora.variable} ${manrope.variable}`}>
       <body className="min-h-screen bg-transparent font-sans text-text-primary antialiased">
-        <div className="fixed inset-0 z-[-30]">
+        <div className="fixed inset-0 z-[-30] opacity-30">
           <ColorBends
             colors={["#7C3AED", "#A855F7", "#2EE6C8"]}
             rotation={90}
