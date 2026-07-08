@@ -2,13 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Palette, Megaphone, Users } from "lucide-react";
+import { LayoutGrid, Palette, Megaphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/esteira", label: "Esteira de Conteúdo", icon: LayoutGrid },
   { href: "/design", label: "Design", icon: Palette },
-  { href: "/clientes", label: "Projeto por Cliente", icon: Users },
+  // Desativado de novo: gestor confirmou que "Projeto por Cliente" deve puxar dos boards
+  // de Project Management de cada cliente (Kotai/LiberPay/Neocoder), nao do Design filtrado.
+  // Esses boards ainda nao ficaram acessiveis pela API (aguardando suporte do Notion
+  // resolver "data_sources" vazio). Reativar quando o acesso for resolvido e a tela
+  // for reconstruida puxando dos boards reais.
+  // { href: "/clientes", label: "Projeto por Cliente", icon: Users },
   { href: "/smm", label: "SMM Social Media", icon: Megaphone },
 ];
 
