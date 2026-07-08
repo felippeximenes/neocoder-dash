@@ -9,6 +9,7 @@ html {
 body {
   background-color: #04050c;
   position: relative;
+  overflow-x: hidden;
 }
 
 body::before {

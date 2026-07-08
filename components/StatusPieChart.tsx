@@ -30,7 +30,7 @@ export function StatusPieChart({
 
   return (
     <Card className={cn("flex flex-col justify-center", className)}>
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col items-center gap-6 sm:flex-row">
         <div className="relative h-[190px] w-[190px] flex-none">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -56,15 +56,15 @@ export function StatusPieChart({
             </span>
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-3">
+        <div className="flex w-full flex-1 flex-col gap-3">
           {data.map((d) => (
             <div key={d.name} className="flex items-center gap-2.5 text-sm">
               <span
                 className="h-2.5 w-2.5 flex-none rounded-sm"
                 style={{ background: colorMap[d.name] ?? "#8A8FA8" }}
               />
-              <span className="flex-1 text-text-secondary">{d.name}</span>
-              <span className="font-display font-bold text-text-primary">
+              <span className="min-w-0 flex-1 truncate text-text-secondary">{d.name}</span>
+              <span className="font-display flex-none font-bold text-text-primary">
                 {total > 0 ? Math.round((d.value / total) * 100) : 0}%
               </span>
             </div>

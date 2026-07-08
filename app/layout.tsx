@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sora, Manrope } from "next/font/google";
-import { Sidebar } from "@/components/Sidebar";
-import { Topbar } from "@/components/Topbar";
+import { AppShell } from "@/components/AppShell";
 import ColorBends from "@/components/ColorBends";
 import "./globals.css";
 
@@ -46,13 +45,7 @@ export default function RootLayout({
             transparent
           />
         </div>
-        <Topbar />
-        <div className="flex">
-          <Sidebar />
-          <main className="min-h-screen flex-1 pl-60">
-            <div className="mx-auto max-w-7xl px-8 py-10">{children}</div>
-          </main>
-        </div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
