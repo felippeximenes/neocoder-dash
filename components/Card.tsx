@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 interface CardProps {
   children: ReactNode;
   className?: string;
+  stripColor?: string;
 }
 
 function onCardMove(e: React.MouseEvent<HTMLDivElement>) {
@@ -14,7 +15,7 @@ function onCardMove(e: React.MouseEvent<HTMLDivElement>) {
   e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
 }
 
-export function Card({ children, className }: CardProps) {
+export function Card({ children, className, stripColor }: CardProps) {
   return (
     <div
       onMouseMove={onCardMove}
@@ -23,6 +24,9 @@ export function Card({ children, className }: CardProps) {
         className
       )}
     >
+      {stripColor && (
+        <span className={cn("absolute left-0 top-0 z-[2] h-full w-1", stripColor)} />
+      )}
       <div className="relative z-[2]">{children}</div>
       <style jsx>{`
         .card-spotlight::before {

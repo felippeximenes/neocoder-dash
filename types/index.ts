@@ -73,4 +73,16 @@ export interface StatusCount {
 export interface ScorecardData {
   label: string;
   value: number;
+  color?: string;
+}
+
+export interface AlertaItem {
+  tone: "red" | "green" | "purple";
+  title: string;
+  desc: string;
+}
+
+export interface ProximoVencimento {
+  nome: string;
+  data: string | null;
 }

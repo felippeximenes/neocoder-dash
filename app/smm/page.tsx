@@ -3,10 +3,13 @@ import { Calendar, CircleDashed, Clock, Eye } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
+import { BarRows } from "@/components/WorkloadBarChart";
+import { Card } from "@/components/Card";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
 import { Badge, PlatformBadge, SMM_STATUS_BADGE } from "@/components/Badge";
 import {
   getSmmItems,
+  getSmmPlatformVolume,
   getSmmScorecards,
   getSmmStatusDistribution,
   getSmmTableRows,
@@ -47,10 +50,23 @@ async function Scorecards() {
   );
 }
 
-async function Chart() {
+async function Charts() {
   const items = await getSmmItems();
-  const data = getSmmStatusDistribution(items).filter((d) => d.name !== "Concluído");
-  return <StatusPieChart data={data} colorMap={SMM_COLOR_MAP} />;
+  const distribution = getSmmStatusDistribution(items).filter((d) => d.name !== "Concluído");
+  const volume = getSmmPlatformVolume(items);
+  return (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <StatusPieChart data={distribution} colorMap={SMM_COLOR_MAP} centerLabel="POSTS" />
+      <Card className="flex flex-1 flex-col justify-center">
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Volume por plataforma
+        </span>
+        <div className="mt-4">
+          <BarRows data={volume} />
+        </div>
+      </Card>
+    </div>
+  );
 }
 
 async function Table() {
@@ -99,6 +115,15 @@ function ScorecardsSkeletonGrid() {
   );
 }
 
+function ChartsSkeletonGrid() {
+  return (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ChartSkeleton />
+      <ChartSkeleton />
+    </div>
+  );
+}
+
 export default function SmmPage() {
   return (
     <>
@@ -107,8 +132,8 @@ export default function SmmPage() {
         <Suspense fallback={<ScorecardsSkeletonGrid />}>
           <Scorecards />
         </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <Chart />
+        <Suspense fallback={<ChartsSkeletonGrid />}>
+          <Charts />
         </Suspense>
         <Suspense fallback={<TableSkeleton />}>
           <Table />

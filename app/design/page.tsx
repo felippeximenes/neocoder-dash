@@ -65,15 +65,20 @@ async function Charts() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium text-text-secondary">Distribuição por status</span>
-        <StatusPieChart data={distribution} colorMap={DESIGN_COLOR_MAP} />
+        <StatusPieChart
+          data={distribution}
+          colorMap={DESIGN_COLOR_MAP}
+          centerLabel="JOBS"
+          className="flex-1"
+        />
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium text-text-secondary">Carga por responsável</span>
-        <WorkloadBarChart data={workload} />
+        <WorkloadBarChart data={workload} colorFrom="#7C3AED" colorTo="#A855F7" />
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium text-text-secondary">% de ocupação do time</span>
-        <WorkloadBarChart data={ocupacao} unit="%" />
+        <WorkloadBarChart data={ocupacao} unit="%" colorFrom="#14B8A6" colorTo="#2EE6C8" />
       </div>
     </div>
   );

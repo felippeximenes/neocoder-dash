@@ -3,9 +3,11 @@ import { AlertTriangle, CheckCircle2, Circle, Clock, ListChecks } from "lucide-r
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
+import { AlertList } from "@/components/AlertList";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
 import { Badge, CLIENTE_BADGE, ESTEIRA_STATUS_BADGE, PRIORIDADE_BADGE } from "@/components/Badge";
 import {
+  getEsteiraAlerts,
   getEsteiraItems,
   getEsteiraScorecards,
   getEsteiraStatusDistribution,
@@ -37,10 +39,16 @@ async function Scorecards() {
   );
 }
 
-async function Chart() {
+async function Charts() {
   const items = await getEsteiraItems();
-  const data = getEsteiraStatusDistribution(items);
-  return <StatusPieChart data={data} colorMap={ESTEIRA_COLOR_MAP} />;
+  const distribution = getEsteiraStatusDistribution(items);
+  const alerts = getEsteiraAlerts(items);
+  return (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <StatusPieChart data={distribution} colorMap={ESTEIRA_COLOR_MAP} centerLabel="ESTEIRAS" />
+      <AlertList alerts={alerts} />
+    </div>
+  );
 }
 
 async function Table() {
@@ -98,6 +106,15 @@ function ScorecardsSkeletonGrid() {
   );
 }
 
+function ChartsSkeletonGrid() {
+  return (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ChartSkeleton />
+      <ChartSkeleton />
+    </div>
+  );
+}
+
 export default function EsteiraPage() {
   return (
     <>
@@ -109,8 +126,8 @@ export default function EsteiraPage() {
         <Suspense fallback={<ScorecardsSkeletonGrid />}>
           <Scorecards />
         </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <Chart />
+        <Suspense fallback={<ChartsSkeletonGrid />}>
+          <Charts />
         </Suspense>
         <Suspense fallback={<TableSkeleton />}>
           <Table />

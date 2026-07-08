@@ -18,9 +18,18 @@ const ACCENT_MAP: Record<NonNullable<ScorecardProps["accent"]>, string> = {
   gray: "text-brand-gray",
 };
 
+const STRIP_MAP: Record<NonNullable<ScorecardProps["accent"]>, string> = {
+  blue: "bg-brand-blue",
+  green: "bg-brand-green",
+  yellow: "bg-brand-yellow",
+  red: "bg-brand-red",
+  purple: "bg-brand-purple",
+  gray: "bg-brand-gray",
+};
+
 export function Scorecard({ label, value, icon: Icon, accent = "gray" }: ScorecardProps) {
   return (
-    <Card className="flex flex-col gap-2">
+    <Card className="flex flex-col gap-2" stripColor={STRIP_MAP[accent]}>
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
           {label}
