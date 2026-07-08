@@ -65,7 +65,12 @@ async function Charts() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium text-text-secondary">Distribuição por status</span>
-        <StatusPieChart data={distribution} colorMap={DESIGN_COLOR_MAP} centerLabel="JOBS" />
+        <StatusPieChart
+          data={distribution}
+          colorMap={DESIGN_COLOR_MAP}
+          centerLabel="JOBS"
+          className="flex-1"
+        />
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium text-text-secondary">Carga por responsável</span>

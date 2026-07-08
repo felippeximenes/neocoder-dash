@@ -1,16 +1,23 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import type { StatusCount } from "@/types";
 import { Card } from "@/components/Card";
+import { cn } from "@/lib/utils";
 
 interface StatusPieChartProps {
   data: StatusCount[];
   colorMap: Record<string, string>;
   centerLabel?: string;
+  className?: string;
 }
 
-export function StatusPieChart({ data, colorMap, centerLabel = "TOTAL" }: StatusPieChartProps) {
+export function StatusPieChart({
+  data,
+  colorMap,
+  centerLabel = "TOTAL",
+  className,
+}: StatusPieChartProps) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
 
   if (total === 0) {
@@ -22,7 +29,7 @@ export function StatusPieChart({ data, colorMap, centerLabel = "TOTAL" }: Status
   }
 
   return (
-    <Card>
+    <Card className={cn("flex flex-col justify-center", className)}>
       <div className="flex items-center gap-6">
         <div className="relative h-[190px] w-[190px] flex-none">
           <ResponsiveContainer width="100%" height="100%">
@@ -40,14 +47,6 @@ export function StatusPieChart({ data, colorMap, centerLabel = "TOTAL" }: Status
                   <Cell key={entry.name} fill={colorMap[entry.name] ?? "#8A8FA8"} />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{
-                  background: "rgba(10,11,26,0.95)",
-                  border: "1px solid rgba(120,90,200,0.3)",
-                  borderRadius: 8,
-                  color: "#E7E8F2",
-                }}
-              />
             </PieChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
