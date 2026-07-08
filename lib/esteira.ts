@@ -14,7 +14,15 @@ import {
   parseYesNoPercent,
   queryDatabase,
 } from "./notion";
-import type { Cliente, EsteiraItem, EsteiraStatus, Prioridade, Recorrencia, StatusCount } from "@/types";
+import type {
+  AlertaItem,
+  Cliente,
+  EsteiraItem,
+  EsteiraStatus,
+  Prioridade,
+  Recorrencia,
+  StatusCount,
+} from "@/types";
 
 function parseDiasProducao(text: string): number {
   if (/ainda a fazer/i.test(text)) return 0;
@@ -74,4 +82,49 @@ export function getEsteiraTableRows(items: EsteiraItem[]): EsteiraItem[] {
   return items
     .filter((i) => i.status !== "Concluído")
     .sort((a, b) => b.diasAtraso - a.diasAtraso);
+}
+
+export function getEsteiraAlerts(items: EsteiraItem[]): AlertaItem[] {
+  const alerts: AlertaItem[] = [];
+
+  const atrasadas = items
+    .filter((i) => i.diasAtraso > 0 && i.status !== "Concluído")
+    .sort((a, b) => b.diasAtraso - a.diasAtraso);
+  if (atrasadas.length > 0) {
+    const pior = atrasadas[0];
+    alerts.push({
+      tone: "red",
+      title: `${atrasadas.length} esteira${atrasadas.length === 1 ? "" : "s"} em atraso`,
+      desc: `${pior.nomeTarefa} está ${pior.diasAtraso} dia${pior.diasAtraso === 1 ? "" : "s"} atrasada, prioridade ${pior.prioridade.toLowerCase()}.`,
+    });
+  }
+
+  const total = items.length;
+  const ativas = items.filter((i) => i.status !== "Concluído").length;
+  if (total > 0) {
+    const pct = Math.round((ativas / total) * 100);
+    alerts.push({
+      tone: "green",
+      title: `${pct}% da esteira ativa`,
+      desc: `${ativas} de ${total} esteira${total === 1 ? "" : "s"} em produção neste ciclo.`,
+    });
+  }
+
+  const comRetrabalho = items.filter((i) => i.retrabalho > 0);
+  if (comRetrabalho.length > 0) {
+    const maxRetrabalho = Math.max(...comRetrabalho.map((i) => i.retrabalho));
+    alerts.push({
+      tone: "purple",
+      title: "Retrabalho identificado",
+      desc: `${comRetrabalho.length} esteira${comRetrabalho.length === 1 ? "" : "s"} com retrabalho, máximo de ${maxRetrabalho}% registrado.`,
+    });
+  } else if (total > 0) {
+    alerts.push({
+      tone: "purple",
+      title: "Sem retrabalho registrado",
+      desc: "Nenhuma esteira com retrabalho neste momento.",
+    });
+  }
+
+  return alerts;
 }

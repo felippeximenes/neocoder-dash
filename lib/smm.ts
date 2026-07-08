@@ -8,7 +8,14 @@ import {
   getTitle,
   queryDatabase,
 } from "./notion";
-import type { Plataforma, SmmItem, SmmStatus, StatusCount } from "@/types";
+import type {
+  Plataforma,
+  ProximoVencimento,
+  ScorecardData,
+  SmmItem,
+  SmmStatus,
+  StatusCount,
+} from "@/types";
 
 const SMM_CUTOFF_DATE = "2026-01-01";
 
@@ -72,4 +79,26 @@ export function getSmmTableRows(items: SmmItem[]): SmmItem[] {
         i.startData >= SMM_CUTOFF_DATE
     )
     .sort((a, b) => (a.startData ?? "").localeCompare(b.startData ?? ""));
+}
+
+const PLATAFORMA_COLOR: Record<Plataforma, string> = {
+  Instagram: "#A855F7",
+  LinkedIn: "#6366F1",
+  "Twitter/X": "#8A8FA8",
+};
+
+export function getSmmPlatformVolume(items: SmmItem[]): ScorecardData[] {
+  const counts = new Map<Plataforma, number>();
+  for (const item of items) {
+    counts.set(item.plataforma, (counts.get(item.plataforma) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([label, value]) => ({ label, value, color: PLATAFORMA_COLOR[label] }))
+    .sort((a, b) => b.value - a.value);
+}
+
+export function getSmmProximosVencimentos(items: SmmItem[], limit = 3): ProximoVencimento[] {
+  return getSmmTableRows(items)
+    .slice(0, limit)
+    .map((item) => ({ nome: item.name, data: item.finalData ?? item.startData }));
 }

@@ -1,16 +1,49 @@
-"use client";
-
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { ScorecardData } from "@/types";
 import { Card } from "@/components/Card";
 
-interface WorkloadBarChartProps {
+interface BarRowsProps {
   data: ScorecardData[];
   unit?: string;
+  colorFrom?: string;
+  colorTo?: string;
 }
 
-export function WorkloadBarChart({ data, unit = "" }: WorkloadBarChartProps) {
-  if (data.length === 0) {
+export function BarRows({ data, unit = "", colorFrom = "#7C3AED", colorTo = "#A855F7" }: BarRowsProps) {
+  const max = Math.max(...data.map((d) => d.value), 1);
+
+  return (
+    <div className="flex flex-col gap-4">
+      {data.map((d) => {
+        const width = unit === "%" ? d.value : (d.value / max) * 100;
+        const background = d.color
+          ? d.color
+          : `linear-gradient(90deg, ${colorFrom}, ${colorTo})`;
+        return (
+          <div key={d.label}>
+            <div className="mb-1.5 flex items-baseline justify-between gap-2">
+              <span className="truncate text-sm font-medium text-text-secondary">{d.label}</span>
+              <span className="font-display flex-none text-sm font-bold text-text-primary">
+                {d.value}
+                {unit}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${Math.max(width, 2)}%`, background }}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+type WorkloadBarChartProps = BarRowsProps;
+
+export function WorkloadBarChart(props: WorkloadBarChartProps) {
+  if (props.data.length === 0) {
     return (
       <div className="flex h-72 items-center justify-center rounded-2xl border border-border bg-surface text-sm text-text-secondary backdrop-blur-md">
         Sem dados no momento
@@ -20,34 +53,7 @@ export function WorkloadBarChart({ data, unit = "" }: WorkloadBarChartProps) {
 
   return (
     <Card>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data} layout="vertical" margin={{ left: 12 }}>
-          <CartesianGrid horizontal={false} stroke="rgba(120,90,200,0.12)" />
-          <XAxis
-            type="number"
-            allowDecimals={false}
-            tick={{ fill: "#8A8FA8", fontSize: 12 }}
-            tickFormatter={(value) => `${value}${unit}`}
-          />
-          <YAxis
-            type="category"
-            dataKey="label"
-            width={120}
-            tick={{ fill: "#8A8FA8", fontSize: 12 }}
-          />
-          <Tooltip
-            cursor={{ fill: "rgba(139,92,246,0.08)" }}
-            contentStyle={{
-              background: "rgba(10,11,26,0.95)",
-              border: "1px solid rgba(120,90,200,0.3)",
-              borderRadius: 8,
-              color: "#E7E8F2",
-            }}
-            formatter={(value: number) => [`${value}${unit}`, "Valor"]}
-          />
-          <Bar dataKey="value" fill="#A855F7" radius={[0, 6, 6, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <BarRows {...props} />
     </Card>
   );
 }
