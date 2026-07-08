@@ -11,17 +11,36 @@ export const DATABASE_IDS = {
   smm: "1130e05d1eff8061977af263fa16b90d",
 };
 
+const dataSourceIdCache = new Map<string, string>();
+
+async function resolveDataSourceId(databaseId: string): Promise<string> {
+  const cached = dataSourceIdCache.get(databaseId);
+  if (cached) return cached;
+
+  const database = await notion.databases.retrieve({ database_id: databaseId });
+  const dataSourceId = "data_sources" in database ? database.data_sources[0]?.id : undefined;
+  if (!dataSourceId) {
+    throw new Error(
+      `A database ${databaseId} não tem nenhuma data source acessível pela integração. ` +
+        `Verifique o compartilhamento no Notion (Connections) dessa database especificamente.`
+    );
+  }
+  dataSourceIdCache.set(databaseId, dataSourceId);
+  return dataSourceId;
+}
+
 export async function queryDatabase(
   databaseId: string,
   filter?: Record<string, unknown>,
   sorts?: Record<string, unknown>[]
 ) {
+  const dataSourceId = await resolveDataSourceId(databaseId);
   const results: PageObjectResponse[] = [];
   let cursor: string | undefined;
 
   do {
-    const response = await notion.databases.query({
-      database_id: databaseId,
+    const response = await notion.dataSources.query({
+      data_source_id: dataSourceId,
       filter: filter as never,
       sorts: sorts as never,
       start_cursor: cursor,
