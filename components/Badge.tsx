@@ -54,6 +54,11 @@ export const RISCO_BADGE: Record<string, string> = {
   Alto: "bg-brand-red/15 text-brand-red",
 };
 
+export const SITUACAO_BADGE: Record<string, string> = {
+  Atrasado: "bg-brand-red/15 text-brand-red",
+  "No prazo": "bg-brand-green/15 text-brand-green",
+};
+
 export const SMM_STATUS_BADGE: Record<string, string> = {
   "Não iniciada": "bg-brand-gray/15 text-brand-gray",
   "Em andamento": "bg-brand-blue/15 text-brand-blue",

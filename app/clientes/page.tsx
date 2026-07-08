@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
-import { Badge, CLIENTE_BADGE, RISCO_BADGE } from "@/components/Badge";
+import { Badge, CLIENTE_BADGE, RISCO_BADGE, SITUACAO_BADGE } from "@/components/Badge";
 import { ListChecks, Percent, AlertTriangle, Clock } from "lucide-react";
 import {
   getDesignClienteSummary,
@@ -57,7 +57,14 @@ async function ClienteSection({ cliente, items }: { cliente: DesignCliente; item
           {
             key: "situacao",
             header: "Situação",
-            render: (r) => getSituacaoPrazo(r),
+            render: (r) => {
+              const situacao = getSituacaoPrazo(r);
+              return situacao === "—" ? (
+                "—"
+              ) : (
+                <Badge label={situacao} colorClass={SITUACAO_BADGE[situacao]} />
+              );
+            },
           },
           {
             key: "prazo",

@@ -5,7 +5,7 @@ import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { StatusPieChart, ChartSkeleton } from "@/components/StatusPieChart";
 import { WorkloadBarChart } from "@/components/WorkloadBarChart";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
-import { Badge, CLIENTE_BADGE, DESIGN_STATUS_BADGE, RISCO_BADGE } from "@/components/Badge";
+import { Badge, CLIENTE_BADGE, DESIGN_STATUS_BADGE, RISCO_BADGE, SITUACAO_BADGE } from "@/components/Badge";
 import {
   getDesignItems,
   getDesignOcupacaoPercentual,
@@ -13,6 +13,7 @@ import {
   getDesignStatusDistribution,
   getDesignTableRows,
   getDesignWorkloadByResponsible,
+  getSituacaoPrazo,
 } from "@/lib/design";
 import type { DesignItem } from "@/types";
 
@@ -113,6 +114,18 @@ async function Table() {
           key: "risco",
           header: "Risco",
           render: (r) => (r.risco ? <Badge label={r.risco} colorClass={RISCO_BADGE[r.risco]} /> : "—"),
+        },
+        {
+          key: "situacao",
+          header: "Situação",
+          render: (r) => {
+            const situacao = getSituacaoPrazo(r);
+            return situacao === "—" ? (
+              "—"
+            ) : (
+              <Badge label={situacao} colorClass={SITUACAO_BADGE[situacao]} />
+            );
+          },
         },
         {
           key: "prazo",
