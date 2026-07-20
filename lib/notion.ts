@@ -9,6 +9,9 @@ export const DATABASE_IDS = {
   esteira: "33e0e05d1eff803f941bd7227953cee1",
   design: "33e0e05d1eff80d094ddfca604d79a91",
   smm: "1130e05d1eff8061977af263fa16b90d",
+  kotaiTasks: "38e0e05d1eff800a9292ef46d66f8f38",
+  neocoderTasks: "1140e05d1eff807a9ba8c41e07cbb100",
+  liberpayTasks: "1180e05d1eff80f3a34ae6e2a235f12f",
 };
 
 export async function queryDatabase(
