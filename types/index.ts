@@ -86,3 +86,25 @@ export interface ProximoVencimento {
   nome: string;
   data: string | null;
 }
+
+export type ProjetoStatus =
+  | "to do"
+  | "Blocked"
+  | "in progress"
+  | "Review"
+  | "Em aprovação"
+  | "Done"
+  | "Not started";
+export type ProjetoPrioridade = "High" | "Medium" | "Low";
+
+export interface ProjetoTask {
+  id: string;
+  cliente: Cliente;
+  item: string;
+  status: ProjetoStatus;
+  deadline: string | null;
+  diasAtraso: number;
+  area: string;
+  responsavel: string;
+  prioridade: ProjetoPrioridade | null;
+}

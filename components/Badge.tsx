@@ -59,6 +59,22 @@ export const SITUACAO_BADGE: Record<string, string> = {
   "No prazo": "bg-brand-green/15 text-brand-green",
 };
 
+export const PROJETO_STATUS_BADGE: Record<string, string> = {
+  "to do": "bg-brand-gray/15 text-brand-gray",
+  "Not started": "bg-brand-gray/15 text-brand-gray",
+  "in progress": "bg-brand-blue/15 text-brand-blue",
+  Review: "bg-brand-purple/15 text-brand-purple",
+  "Em aprovação": "bg-brand-yellow/15 text-brand-yellow",
+  Blocked: "bg-brand-red/15 text-brand-red",
+  Done: "bg-brand-green/15 text-brand-green",
+};
+
+export const PROJETO_PRIORIDADE_BADGE: Record<string, string> = {
+  High: "bg-brand-red/15 text-brand-red",
+  Medium: "bg-brand-yellow/15 text-brand-yellow",
+  Low: "bg-brand-gray/15 text-brand-gray",
+};
+
 export const SMM_STATUS_BADGE: Record<string, string> = {
   "Não iniciada": "bg-brand-gray/15 text-brand-gray",
   "Em andamento": "bg-brand-blue/15 text-brand-blue",
