@@ -1,10 +1,10 @@
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
 import { Scorecard, ScorecardSkeleton } from "@/components/Scorecard";
 import { DataTable, TableSkeleton } from "@/components/DataTable";
 import {
   Badge,
-  CLIENTE_BADGE,
   PROJETO_PRIORIDADE_BADGE,
   PROJETO_STATUS_BADGE,
   SITUACAO_BADGE,
@@ -22,15 +22,21 @@ import type { Cliente, ProjetoTask } from "@/types";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
-const CLIENTES_ORDENADOS: Cliente[] = ["LIBERPAY", "NEOCODER", "KOTAI"];
+const CLIENTE_SLUGS: Record<string, Cliente> = {
+  kotai: "KOTAI",
+  neocoder: "NEOCODER",
+  liberpay: "LIBERPAY",
+};
 
-async function ClienteSection({ cliente, items }: { cliente: Cliente; items: ProjetoTask[] }) {
-  const summary = getProjetoClienteSummary(items);
-  const rows = getProjetoTableRows(items);
+async function Content({ cliente }: { cliente: Cliente }) {
+  const items = await getProjetoTasks();
+  const grouped = getProjetoItemsByCliente(items);
+  const clienteItems = grouped.get(cliente) ?? [];
+  const summary = getProjetoClienteSummary(clienteItems);
+  const rows = getProjetoTableRows(clienteItems);
 
   return (
     <div className="flex flex-col gap-4">
-      <Badge label={cliente} colorClass={CLIENTE_BADGE[cliente]} className="self-start" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Scorecard label="Tarefas em aberto" value={summary.ativos} icon={ListChecks} accent="blue" />
         <Scorecard label="Em atraso" value={summary.emAtraso} icon={AlertTriangle} accent="red" />
@@ -82,18 +88,6 @@ async function ClienteSection({ cliente, items }: { cliente: Cliente; items: Pro
   );
 }
 
-async function Content() {
-  const items = await getProjetoTasks();
-  const grouped = getProjetoItemsByCliente(items);
-  return (
-    <div className="flex flex-col gap-10">
-      {CLIENTES_ORDENADOS.map((cliente) => (
-        <ClienteSection key={cliente} cliente={cliente} items={grouped.get(cliente) ?? []} />
-      ))}
-    </div>
-  );
-}
-
 function ContentSkeleton() {
   return (
     <div className="flex flex-col gap-4">
@@ -107,15 +101,18 @@ function ContentSkeleton() {
   );
 }
 
-export default function ClientesPage() {
+export default function ClienteProjetoPage({ params }: { params: { cliente: string } }) {
+  const cliente = CLIENTE_SLUGS[params.cliente];
+  if (!cliente) notFound();
+
   return (
     <>
       <PageHeader
-        title="Projeto por Cliente"
-        description="Tarefas dos boards de Project Management de cada cliente no Notion"
+        title={`Projeto — ${cliente}`}
+        description="Tarefas do board de Project Management deste cliente no Notion"
       />
       <Suspense fallback={<ContentSkeleton />}>
-        <Content />
+        <Content cliente={cliente} />
       </Suspense>
     </>
   );

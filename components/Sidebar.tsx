@@ -8,7 +8,9 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/esteira", label: "Esteira de Conteúdo", icon: LayoutGrid },
   { href: "/design", label: "Design", icon: Palette },
-  { href: "/clientes", label: "Projeto por Cliente", icon: Users },
+  { href: "/clientes/kotai", label: "Kotai", icon: Users },
+  { href: "/clientes/neocoder", label: "Neocoder", icon: Users },
+  { href: "/clientes/liberpay", label: "Liberpay", icon: Users },
   { href: "/smm", label: "SMM Social Media", icon: Megaphone },
 ];
 
